@@ -1,8 +1,13 @@
+import { GetServerSideProps } from 'next';
+
 import styles from './home.module.scss';
 
 import Head from "next/head";
+import { stripe } from '../services/stripe';
 
-export default function Home() {
+export default function Home(props) {
+  
+
   return (
     <>
       <Head>
@@ -20,4 +25,17 @@ export default function Home() {
       </main>
     </>
   )
+}
+
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const price = await stripe.prices.retrieve('price_1JFiN9IZGW2gaDppPQP7gbdk', {
+    expand: ['product']
+  })
+
+  return {
+    props: {
+      nome: 'Leandro'
+    }
+  }
 }
