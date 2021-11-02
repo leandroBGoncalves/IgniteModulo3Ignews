@@ -15,12 +15,15 @@ export default NextAuth({
   ],
   callbacks: {
     async signIn( user, account, profile ) {
-      const { email } = user
-
       await fauna.query(
         q.Create(
           q.Collection('users'),
-          {data: { email }}
+          {
+            data: {
+              name: user.name,
+              email: user.email,
+            },
+          },
         )
       )
 
